@@ -5,27 +5,13 @@
   </head>
   <body>
     <p>testing stuff<p>
-    <p id="timer">use ?url query parameter</p>
+<!--     <p id="timer">use ?url query parameter</p> -->
     <script type="text/javascript">
+      const f=n=>{if(n==0n)return"";return f(n/128n)+String.fromCharCode(Number(n%128n));};
       const params = new URLSearchParams(window.location.search);
-      const url = params.get("url");
+      const url = params.get("share");
       if (url) {
-        let num = 3;
-        function update() {
-          document.getElementById("timer").innerText = "Redirecting in " + num + "...";
-        }
-        update();
-        let interval;
-        interval = setInterval(() => {
-          if (num == 0) {
-            clearInterval(interval);
-            window.location.href = url;
-          }
-          else {
-            num--;
-            update();
-          }
-        }, 1000);
+        window.location.href = f(BigInt(url))
       }
     </script>
   </body>
