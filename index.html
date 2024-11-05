@@ -7,11 +7,22 @@
     <p>testing stuff<p>
 <!--     <p id="timer">use ?url query parameter</p> -->
     <script type="text/javascript">
+      const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-=";
       const f=n=>{if(n==0n)return"";return f(n/128n)+String.fromCharCode(Number(n%128n));};
+      const f2=s=>{let n=0n;for(let c of s)n=n*128n+BigInt(c.charCodeAt(0));return n;};
+      const enc = n=>{if(n==0n)return"";return enc(n/64n)+chars.charAt(Number(n%64n));};
+      const dec = s=>{let n=0n;for(let c of s)n=n*64n+BigInt(chars.indexOf(c));return n;};
       const params = new URLSearchParams(window.location.search);
-      const url = params.get("share");
+      const url = params.get("share") || params.get("id");
       if (url) {
-        window.location.href = f(BigInt(url))
+        try {
+          const num = BigInt(url);
+          window.location.href = f(num);
+        }
+        catch(e) {
+          console.log(url);
+          window.location.href = f(dec(url));
+        }
       }
     </script>
   </body>
